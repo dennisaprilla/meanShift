@@ -82,25 +82,26 @@ imPatch = extract_image_patch_center_size(ImSeq(:,:,1), ROI_Center, ROI_Width, R
 
 % color distribution in RGB color space
 Nbins = 8;
-% TargetModel = color_distribution(imPatch, Nbins);
-%         
-%         prev_center = ROI_Center;
-%         I = ImSeq(:,:,2);
-%     
-%         % STEP 1
-%     	% calculate the pdf of the previous position
-%     	imPatch = extract_image_patch_center_size(I, prev_center, ROI_Width, ROI_Height);
-%     	ColorModel = color_distribution(imPatch, Nbins);
-%     	% evaluate the Bhattacharyya coefficient
-%      	rho = compute_bhattacharyya_coefficient(TargetModel, ColorModel);
-%     
-%     	% STEP 2, 3
-%     	% derive the weights
-%     	weights = compute_weights_NG(imPatch, TargetModel, ColorModel, Nbins);
-%     	% compute the mean-shift vector
-%     	% using Epanechnikov kernel, it reduces to a weighted average
-%         z = compute_meanshift_vector(imPatch, prev_center, weights);
-%     	new_center = round(z);
+TargetModel = color_distribution(imPatch, Nbins);
+
+% This part below until before loop is just for debugging
+prev_center = ROI_Center;
+I = ImSeq(:,:,2);
+    
+% STEP 1
+% calculate the pdf of the previous position
+imPatch = extract_image_patch_center_size(I, prev_center, ROI_Width, ROI_Height);
+ColorModel = color_distribution(imPatch, Nbins);
+% evaluate the Bhattacharyya coefficient
+rho = compute_bhattacharyya_coefficient(TargetModel, ColorModel);
+    
+% STEP 2, 3
+% derive the weights
+weights = compute_weights_NG(imPatch, TargetModel, ColorModel, Nbins);
+% compute the mean-shift vector
+% using Epanechnikov kernel, it reduces to a weighted average
+z = compute_meanshift_vector(imPatch, prev_center, weights);
+new_center = round(z);
 
 % %Mean-Shift Algorithm 
 % figure('name', 'Mean Shift Algorithm', 'units', 'normalized', 'outerposition', [0 0 1 1]);
